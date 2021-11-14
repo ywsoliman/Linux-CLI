@@ -1,3 +1,4 @@
+import java.util.Scanner;
 
 public class Parser {
 	String commandName;
@@ -14,6 +15,7 @@ public class Parser {
         	args[i] = arrOfStr[i];
 		return true;
 	}
+	
 	public String getCommandName(){
 		return commandName;
 
@@ -22,4 +24,15 @@ public class Parser {
 		return args;
 
 	}
+	   public static void main(String[] args) throws Exception
+	   {
+	       Scanner scanner = new Scanner(System.in);
+	       String input = scanner.next();
+	       Parser p =new Parser();
+	       p.parse(input);
+	       String[] arrOfStr = p.getArgs();
+//	       for (int i = 0; i < arrOfStr.length; i++)
+	    	   System.out.print(p.getArgs()[1]);
+	       System.out.println(p.getCommandName());
+	   }
 }

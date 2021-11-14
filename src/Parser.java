@@ -31,8 +31,8 @@ public class Parser {
 	       Parser p =new Parser();
 	       p.parse(input);
 	       String[] arrOfStr = p.getArgs();
-//	       for (int i = 0; i < arrOfStr.length; i++)
-	    	   System.out.print(p.getArgs()[1]);
+	       for (int i = 0; i < arrOfStr.length; i++)
+	    	   System.out.print(arrOfStr[i]);
 	       System.out.println(p.getCommandName());
 	   }
 }

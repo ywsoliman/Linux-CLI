@@ -17,32 +17,74 @@ public class Terminal {
 	public void echo(String[] args) {
 		for (int i = 0; i < args.length; i++)
 			System.out.print(args[i] + " ");
+		System.out.println();
 	}
 	
 	public String pwd() {
 		return currPath;
     }
 	
-	public void cp(String source, String destination) throws IOException {
+	public void cp(String[] args) throws IOException {
 		
-		File sourceFile = new File(source);
-		File destFile = new File(destination);
+		File sourceFile = new File(args[0]);
+		File destFile = new File(args[1]);
 		
-		if (sourceFile.isFile()) {
-			
-			Scanner myReader = new Scanner(sourceFile);
-			String srcData = "";
-			while (myReader.hasNextLine()) {
-				srcData += srcData.concat(myReader.nextLine());
+		if (sourceFile.exists())
+		{
+			if (sourceFile.isFile()) {
+				
+				Scanner myReader = new Scanner(sourceFile);
+				String srcData = "";
+				while (myReader.hasNextLine()) {
+					srcData += srcData.concat(myReader.nextLine());
+				}
+				myReader.close();
+				
+				FileWriter myWriter = new FileWriter(destFile);
+			    myWriter.write(srcData);
+			    System.out.println("Data has been copied successfuly!");
+			    myWriter.close();
 			}
-			myReader.close();
-			
-			FileWriter myWriter = new FileWriter(destination);
-		    myWriter.write(srcData);
-		    System.out.println("Data has been copied successfuly!");
-		    myWriter.close();
+		} else {
+			System.out.println("Source file doesn't exist.");
+			return;
 		}
 		
+	}
+	
+	public void touch(String[] args) throws IOException {
+		File f;
+		if(args[0].contains(":")){
+		     f = new File(args[0]);
+		}
+		else {
+			f = new File(currPath+"\\"+args[0]);
+		}
+		f.createNewFile();
+	}
+	
+	public void cd(String[] args) {
+		if(args.length==0) {
+			String[] arr = currPath.split(":", 2);
+			currPath = arr[0]+":\\";
+		}
+		else if(args[0].contains(":")){
+			currPath = args[0];
+		}
+		else if(args[0]==".."){
+		    String target="\\";
+		    String replacement="\\\\";
+		    currPath=currPath.replace(target, replacement);
+		    String[] arr = currPath.split(replacement);
+		    currPath="";
+		    for(int i=0;i<arr.length-1;i++) 
+		    	currPath+= arr[i] + "\\";
+		    currPath=currPath.replace(replacement, target);
+		}
+		else {
+			currPath = currPath+"\\"+args[0];
+		}
+
 	}
 	
 	public void cat(String[] files) throws IOException {
@@ -70,15 +112,24 @@ public class Terminal {
 	}
 	
 	public void ls() {
-
+		
 		File directoryPath = new File(currPath);
 		String files[] = directoryPath.list();
-		
 		Arrays.sort(files);
 		for(int i=0; i<files.length; i++) 
 		System.out.println(files[i]);
-
-    }
+	         
+	}
+	public void lsr(){
+		
+		File directoryPath = new File(currPath);
+		String files[] = directoryPath.list();
+		Arrays.sort(files, Collections.reverseOrder()); 
+		
+		for(int i=0; i<files.length; i++) 
+			System.out.println(files[i]);
+	      
+	}
 	
 	public void mkdir(String[] args) {
 		for(String dir:args) {
@@ -140,7 +191,7 @@ public class Terminal {
 			System.out.println(pwd());
 			break;
 		case "cp":
-			cp(parser.args[0], parser.args[1]);
+			cp(parser.getArgs());
 			break;
 		case "cat":
 			cat(parser.getArgs());
@@ -153,6 +204,9 @@ public class Terminal {
 			break;
 		case "rmdir":
 			rmdir(parser.getArgs());
+			break;
+		case "cd":
+			cd(parser.getArgs());
 			break;
 			
 		}

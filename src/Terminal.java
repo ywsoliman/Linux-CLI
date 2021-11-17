@@ -81,17 +81,19 @@ public class Terminal {
 		if(args.length==0) {
 			String[] arr = currPath.split(":", 2);
 			currPath = arr[0]+":\\";
+			System.out.println(".........");
 		}
 		else if(args[0].contains(":")){
 			currPath = args[0];
 		}
-		else if(args[0]==".."){
+		else if(args[0].contains("..")){
+			
 		    String target="\\";
 		    String replacement="\\\\";
 		    currPath=currPath.replace(target, replacement);
 		    String[] arr = currPath.split(replacement);
 		    currPath="";
-		    for(int i=0;i<arr.length-1;i++) 
+		    for(int i=0;i<arr.length-2;i++) 
 		    	currPath+= arr[i] + "\\";
 		    currPath=currPath.replace(replacement, target);
 		}

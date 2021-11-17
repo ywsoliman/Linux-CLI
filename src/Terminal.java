@@ -27,10 +27,10 @@ public class Terminal {
 		}
 		if (operatorFound)
 		{
-			FileWriter myWriter = new FileWriter(args[args.length - 1]);
-		    myWriter.write(data);
+			FileWriter writeTo = new FileWriter(args[args.length - 1]);
+		    writeTo.write(data);
 		    System.out.println("Data has been copied successfuly!");
-		    myWriter.close();
+		    writeTo.close();
 		}
 	}
 	
@@ -54,10 +54,10 @@ public class Terminal {
 				}
 				myReader.close();
 				
-				FileWriter myWriter = new FileWriter(destFile);
-			    myWriter.write(srcData);
+				FileWriter writeTo = new FileWriter(destFile);
+			    writeTo.write(srcData);
 			    System.out.println("Data has been copied successfuly!");
-			    myWriter.close();
+			    writeTo.close();
 			}
 		} else {
 			System.out.println("Source file doesn't exist.");

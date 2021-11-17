@@ -250,7 +250,9 @@ public class Terminal {
 		case "cd":
 			cd(parser.getArgs());
 			break;
-			
+		case "touch":
+			touch(parser.getArgs());
+			break;
 		}
 		
 	}

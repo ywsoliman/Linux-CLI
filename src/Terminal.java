@@ -127,7 +127,7 @@ public class Terminal {
 			if (file.isFile() && file.exists()) {
 				Scanner myReader = new Scanner(file);
 				while (myReader.hasNextLine()) {
-					data += data.concat(myReader.nextLine());
+					data += (myReader.nextLine() + "\n");
 				}
 				myReader.close();
 			}

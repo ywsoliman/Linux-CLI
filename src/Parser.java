@@ -19,8 +19,7 @@ public class Parser {
 				
 				commandName = arr[0];
 				
-				if (commandName.equals("pwd") ||
-					commandName.equals("ls"))
+				if (commandName.equals("pwd"))
 				{
 					if (arr.length != 1) {
 						System.out.println(commandName + " doesn't take any arguments.");
@@ -28,6 +27,18 @@ public class Parser {
 					}
 					else
 						return true;
+				}
+				else if(commandName.equals("ls")) {
+				if(arr.length==2&&arr[1].equals("-r")) {
+					commandName=commandName+" "+arr[1];
+					return true;
+				}
+				else if(arr.length==1) {
+					return true;
+				}
+				else if(arr.length==2&&!arr[1].equals("-r"))
+					System.out.println(commandName + " doesn't take any arguments.");
+				return false;
 				}
 				else if (commandName.equals("cd"))
 				{

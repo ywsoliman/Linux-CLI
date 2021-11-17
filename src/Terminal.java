@@ -156,6 +156,16 @@ public class Terminal {
 		}
 	}
 	
+	public void rm(String[] args) {
+		File file = new File(args[0]);
+		if(!file.exists())
+			System.out.println("No such file");
+		else if(file.isDirectory())
+			System.out.println("Cant delete this file");
+		else
+			file.delete();
+	}
+
 	public void rmdir(String[] args) throws IOException {
 
 		if(args[0].contains("*")) {
@@ -211,8 +221,14 @@ public class Terminal {
 		case "ls":
 			ls();
 			break;
+		case "ls -r":
+			lsr();
+			break;
 		case "mkdir":
 			mkdir(parser.getArgs());
+			break;
+		case "rm":
+			rm(parser.getArgs());
 			break;
 		case "rmdir":
 			rmdir(parser.getArgs());

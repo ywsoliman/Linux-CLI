@@ -14,10 +14,24 @@ public class Terminal {
 		this.parser = parser;
 	}
 	
-	public void echo(String[] args) {
-		for (int i = 0; i < args.length; i++)
-			System.out.print(args[i] + " ");
-		System.out.println();
+	public void echo(String[] args) throws IOException {
+		
+		boolean operatorFound = false;
+		String data = "";
+		for (int i = 0; i < args.length; i++) {
+			if (args[i].equals(">")) {
+				operatorFound = true;
+				break;
+			}
+			data += (args[i] + " ");
+		}
+		if (operatorFound)
+		{
+			FileWriter myWriter = new FileWriter(args[args.length - 1]);
+		    myWriter.write(data);
+		    System.out.println("Data has been copied successfuly!");
+		    myWriter.close();
+		}
 	}
 	
 	public String pwd() {
@@ -104,11 +118,7 @@ public class Terminal {
 				return;
 			}
 		}
-		System.out.println(data);
-		
-//		File file = new File(args[]);
-//		
-//		
+		System.out.println(data);	
 	}
 	
 	public void ls() {

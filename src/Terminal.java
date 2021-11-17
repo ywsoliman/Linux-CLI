@@ -14,27 +14,43 @@ public class Terminal {
 		this.parser = parser;
 	}
 	
-	public void echo(String[] args) throws IOException {
-		
-		boolean operatorFound = false;
-		String data = "";
+	public boolean hasOperator(String[] args) {
+				
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equals(">")) {
-				operatorFound = true;
-				break;
+				return true;
 			}
-			data += (args[i] + " ");
 		}
-		if (operatorFound)
-		{
-			FileWriter writeTo = new FileWriter(args[args.length - 1]);
-		    writeTo.write(data);
-		    System.out.println("Data has been copied successfuly!");
-		    writeTo.close();
-		}
+		return false;
 	}
 	
-	public String pwd() {
+	public void writeToFile(String data, String[] args) throws IOException
+	{
+		FileWriter writeTo = new FileWriter(args[args.length - 1]);
+	    writeTo.write(data);
+	    System.out.println("Data has been copied successfuly!");
+	    writeTo.close();
+	}
+	
+	public void echo(String[] args) throws IOException {
+		
+
+		String data = "";
+		for (int i = 0; i < args.length; i++) {
+			if (args[i].equals(">"))
+				break;
+			data += (args[i] + " ");
+		}
+		
+		if (hasOperator(args))
+			writeToFile(data, args);
+		else
+			System.out.println(data);
+	}
+	
+	public String pwd(String[] args) throws IOException {
+		if (hasOperator(args))
+			writeToFile(currPath, args);
 		return currPath;
     }
 	
@@ -123,24 +139,25 @@ public class Terminal {
 		System.out.println(data);	
 	}
 	
-	public void ls() {
+	public void ls(String[] args) throws IOException {
 		
 		File directoryPath = new File(currPath);
 		String files[] = directoryPath.list();
-		Arrays.sort(files);
-		for(int i=0; i<files.length; i++) 
-		System.out.println(files[i]);
-	         
-	}
-	public void lsr(){
 		
-		File directoryPath = new File(currPath);
-		String files[] = directoryPath.list();
-		Arrays.sort(files, Collections.reverseOrder()); 
+		if (args.length == 0)
+			Arrays.sort(files);
+		else if (args.length == 1 && args[0].equals("-r"))
+			Arrays.sort(files, Collections.reverseOrder()); 
 		
-		for(int i=0; i<files.length; i++) 
-			System.out.println(files[i]);
-	      
+		String content = "";
+		for (int i = 0; i < files.length; i++)
+			content += (files[i] + "\n");
+		
+		if (hasOperator(args))
+				writeToFile(content, args);
+			else
+				System.out.println(content);  
+
 	}
 	
 	public void mkdir(String[] args) {
@@ -210,7 +227,7 @@ public class Terminal {
 			echo(parser.getArgs());
 			break;
 		case "pwd":
-			System.out.println(pwd());
+			System.out.println(pwd(parser.getArgs()));
 			break;
 		case "cp":
 			cp(parser.getArgs());
@@ -219,10 +236,7 @@ public class Terminal {
 			cat(parser.getArgs());
 			break;
 		case "ls":
-			ls();
-			break;
-		case "ls -r":
-			lsr();
+			ls(parser.getArgs());
 			break;
 		case "mkdir":
 			mkdir(parser.getArgs());

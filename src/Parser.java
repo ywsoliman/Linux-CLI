@@ -5,6 +5,16 @@ public class Parser {
 	String[] args;
 	String[] allCommands = {"echo", "pwd", "cd", "ls", "mkdir", "rmdir", "touch", "cp", "rm", "cat"};
 	
+	public boolean hasOperator(String[] inputSplit) {
+		
+		for (int i = 0; i < inputSplit.length; i++) {
+			if (inputSplit[i].equals(">")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public boolean parse(String input) {
 		
 		if (input.equals(""))
@@ -12,6 +22,8 @@ public class Parser {
 		
 		String[] arr = input.split(" ");
 		args = new String[arr.length - 1];
+		
+		
 		
 		for (int i = 0; i < allCommands.length; i++) {
 			
@@ -21,6 +33,12 @@ public class Parser {
 				
 				if (commandName.equals("pwd"))
 				{
+					if (arr.length == 3 && hasOperator(arr))
+					{
+						args[0] = arr[1];
+						args[1] = arr[2];
+						return true;
+					}
 					if (arr.length != 1) {
 						System.out.println(commandName + " doesn't take any arguments.");
 						return false;
@@ -30,16 +48,32 @@ public class Parser {
 				}
 				else if(commandName.equals("ls"))
 				{
-					if(arr.length==2&&arr[1].equals("-r")) {
-						commandName=commandName+" "+arr[1];
+					if ((arr.length == 3 || arr.length == 4) && hasOperator(arr))
+					{
+						if (arr.length == 3)
+						{
+							args[0] = arr[1];
+							args[1] = arr[2];
+						}
+						else
+						{
+							args[0] = arr[1];
+							args[1] = arr[2];
+							args[2] = arr[3];
+						}
 						return true;
 					}
-					else if(arr.length==1) {
+					else if (arr.length == 1)
+						return true;
+					else if (arr.length == 2 && arr[1].equals("-r"))
+					{
+						args[0] = arr[1];
 						return true;
 					}
-					else if(arr.length==2&&!arr[1].equals("-r"))
+					else
 						System.out.println(commandName + " doesn't take any arguments.");
 					return false;
+
 				}
 				else if (commandName.equals("cd"))
 				{

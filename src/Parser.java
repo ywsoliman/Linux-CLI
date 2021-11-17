@@ -105,11 +105,8 @@ public class Parser {
 					return true;
 				}
 			}
-			else {
-				System.out.println("Command not found!");
-				return false;
-			}
 		}
+		System.out.println("Command not found!");
 		return false;
 	}
 	

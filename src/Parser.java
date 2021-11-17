@@ -58,13 +58,7 @@ public class Parser {
 				
 				else if (commandName.equals("cp"))
 				{
-					if (arr.length == 4 && arr[1].equals("-r")) {
-						args[0] = arr[1];
-						args[1] = arr[2];
-						args[2] = arr[3];
-						return true;
-					}
-					else if (arr.length == 3) {
+					if (arr.length == 3) {
 						args[0] = arr[1];
 						args[1] = arr[2];
 						return true;
